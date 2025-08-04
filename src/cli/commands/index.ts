@@ -15,6 +15,7 @@ import { swarmAction } from './swarm.js';
 import { SimpleMemoryManager } from './memory.js';
 import { sparcAction } from './sparc.js';
 import { createMigrateCommand } from './migrate.js';
+import { providerCommand } from './provider.js';
 import { enterpriseCommands } from './enterprise.js';
 
 // Import enhanced orchestration commands
@@ -1807,6 +1808,9 @@ Now, please proceed with the task: ${task}`;
   // Migration command
   const migrateCmd = createMigrateCommand();
   cli.command(migrateCmd as any);
+
+  // Provider command
+  cli.command(providerCommand as any);
 
   // Swarm UI command (convenience wrapper)
   cli.command({
