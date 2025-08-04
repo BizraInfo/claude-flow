@@ -39,9 +39,7 @@ export default {
     '<rootDir>/bin/',
     '<rootDir>/node_modules/'
   ],
-  transformIgnorePatterns: [
-    'node_modules/(?!(chalk|ora|inquirer|nanoid|fs-extra|ansi-styles|ruv-swarm|@modelcontextprotocol)/)'
-  ],
+  transformIgnorePatterns: [],
   resolver: undefined,
   collectCoverageFrom: [
     'src/**/*.ts',

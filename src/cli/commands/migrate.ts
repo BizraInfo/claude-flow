@@ -7,9 +7,11 @@ import { MigrationRunner } from '../../migration/migration-runner.js';
 import { MigrationAnalyzer } from '../../migration/migration-analyzer.js';
 import { RollbackManager } from '../../migration/rollback-manager.js';
 import type { MigrationStrategy } from '../../migration/types.js';
-import { logger } from '../../migration/logger.js';
+import * as migrationLogger from '../../migration/logger.js';
 import * as path from 'path';
 import chalk from 'chalk';
+
+const { logger } = migrationLogger;
 
 export function createMigrateCommand(): Command {
   const command = new Command('migrate');

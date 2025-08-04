@@ -2,6 +2,7 @@ import chalk from 'chalk';
 import { getErrorMessage } from '../../utils/error-handler.js';
 import { CLI, success, error, warning, info, VERSION } from '../cli-core.js';
 import type { Command, CommandContext } from '../cli-core.js';
+import { runInteractiveInit } from '../simple-commands/init/interactive-init.js';
 import colors from 'chalk';
 const { bold, blue, yellow } = colors;
 import { Orchestrator } from '../../core/orchestrator-fixed.js';
@@ -73,6 +74,22 @@ export function setupCommands(cli: CLI): void {
     ],
     action: async (ctx: CommandContext) => {
       try {
+        // A "bare" command is one with no arguments and no flags other than the internal '_'
+        const flagKeys = Object.keys(ctx.flags).filter(f => f !== '_');
+        const isBareCommand = ctx.args.length === 0 && flagKeys.length === 0;
+        const isInteractiveFlag = ctx.flags.interactive;
+
+        if (isBareCommand || isInteractiveFlag) {
+          const interactiveOptions = await runInteractiveInit();
+          if (interactiveOptions) {
+            // Overwrite flags with the options from the wizard
+            ctx.flags = interactiveOptions;
+          } else {
+            // User cancelled, so we exit gracefully
+            return;
+          }
+        }
+
         success('Initializing Claude Code integration files...');
 
         const force = (ctx.flags.force as boolean) || (ctx.flags.f as boolean);
